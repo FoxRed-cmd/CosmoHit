@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class BulletSpawner : MonoBehaviour
 {
@@ -7,6 +6,8 @@ public class BulletSpawner : MonoBehaviour
     private GameObject bulletPrefab;
     [SerializeField]
     private float bulletSpeed = 5f;
+    [SerializeField]
+    private float lifeTime = 5f;
     [SerializeField]
     private float[] spawnIntervals;
     [SerializeField]
@@ -42,7 +43,7 @@ public class BulletSpawner : MonoBehaviour
                 if (loop)
                     currentIndex = 0;
                 else
-                    enabled = false; // Остановить скрипт
+                    enabled = false;
             }
         }
     }
@@ -54,7 +55,7 @@ public class BulletSpawner : MonoBehaviour
         var script = bullet.GetComponent<LaserBullet>();
         if (script != null)
         {
-            script.SetDirection(shootDirection, bulletSpeed);
+            script.SetDirection(shootDirection, bulletSpeed, lifeTime);
         }
     }
 }

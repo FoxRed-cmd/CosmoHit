@@ -8,6 +8,8 @@ public class RadialBulletSpawner : MonoBehaviour
     [SerializeField]
     private float bulletSpeed = 30f;
     [SerializeField]
+    private float lifeTime = 5f;
+    [SerializeField]
     private float spawnInterval = 5f;
 
     private float timer;
@@ -48,7 +50,7 @@ public class RadialBulletSpawner : MonoBehaviour
             var script = bullet.GetComponent<LaserBullet>();
             if (script != null)
             {
-                script.SetDirection(dir, bulletSpeed);
+                script.SetDirection(dir, bulletSpeed, lifeTime);
             }
         }
     }

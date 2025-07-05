@@ -1,17 +1,16 @@
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(Rigidbody))]
 public class SpaceshipController : MonoBehaviour
 {
-    
+
     [SerializeField]
     private float moveForce = 20f; // Сила движения корабля
     [SerializeField]
     private float maxSpeed = 30f; // Максимальная скорость корабля
     [SerializeField]
     private float drag = 0.95f; // Коэффициент замедления (чем ближе к 1 — тем дольше тянет)
-    
+
     [SerializeField]
     private float tiltAngleX = 15f;
     [SerializeField]
@@ -37,7 +36,7 @@ public class SpaceshipController : MonoBehaviour
         baseRotation = transform.localRotation;
     }
 
-    
+
     void Update()
     {
         ClampToScreen();
@@ -72,7 +71,7 @@ public class SpaceshipController : MonoBehaviour
     }
 
     // Метод для наклона корабля в зависимости от направления движения
-    private void Tilt() 
+    private void Tilt()
     {
         float tiltX = -moveInput.z * tiltAngleX;
         float tiltY = -moveInput.x * tiltAngleY;
