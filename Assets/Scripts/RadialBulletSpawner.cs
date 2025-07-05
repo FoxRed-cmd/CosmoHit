@@ -14,6 +14,12 @@ public class RadialBulletSpawner : MonoBehaviour
 
     private Quaternion initialRotation = Quaternion.Euler(90f, 90f, 180f);
 
+    private void Start()
+    {
+        SpawnRadialBullets();
+        timer = 0f;
+    }
+
     void Update()
     {
         timer += Time.deltaTime;
