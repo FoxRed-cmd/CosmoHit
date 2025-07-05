@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class LaserBullet : MonoBehaviour
 {
-    [SerializeField]
     private float speed = 15f;
     [SerializeField]
     private float lifeTime = 5f;
@@ -17,5 +16,11 @@ public class LaserBullet : MonoBehaviour
     void Update()
     {
         transform.position += direction.normalized * speed * Time.deltaTime;
+    }
+
+    public void SetDirection(Vector3 newDirection, float newSpeed)
+    {
+        direction = newDirection.normalized;
+        speed = newSpeed;
     }
 }
