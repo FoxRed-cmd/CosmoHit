@@ -1,28 +1,21 @@
 using UnityEngine;
 
-public class DirectionalSpreadSpawner : MonoBehaviour
+public class DirectionalSpreadSpawner : BaseBulletSpawner
 {
-    [SerializeField]
-    private GameObject bulletPrefab;
-    [SerializeField]
-    private float bulletSpeed = 30f;
-    [SerializeField]
-    private float lifeTime = 5f;
-    [SerializeField]
-    private float spawnInterval = 5f;
     [SerializeField]
     private int bulletCount = 8;
     [SerializeField]
-    private float spreadAngle = 180f;
+    private float spreadAngle = 360f;
     [SerializeField]
-    private Vector3 flyDirection = Vector3.down;
-
-    private float timer;
-    private Quaternion initialRotation = Quaternion.Euler(90f, 90f, 180f);
+    private float rotationSpeed = 30f; // градусов в секунду
+    [SerializeField]
+    private bool isRotate = false; // включение вращения
+    private float currentAngleOffset = 0f;
 
     private void Start()
     {
-        SpawnBullets();
+        initialRotation = Quaternion.Euler(90f, 90f, 180f);
+        Spawn();
         timer = 0f;
     }
 
@@ -31,22 +24,28 @@ public class DirectionalSpreadSpawner : MonoBehaviour
         timer += Time.deltaTime;
         if (timer >= spawnInterval)
         {
-            SpawnBullets();
+            Spawn();
             timer = 0f;
+        }
+
+        if (isRotate)
+        {
+            currentAngleOffset += rotationSpeed * Time.deltaTime;
+            currentAngleOffset %= 360f; // чтобы не выходить за пределы круга
         }
     }
 
-    private void SpawnBullets()
+    protected override void Spawn()
     {
         float angleStep = spreadAngle / (bulletCount - 1); // равномерное распределение
         float startAngle = -spreadAngle / 2f; // от -90 до +90 при 180°
 
         for (int i = 0; i < bulletCount; i++)
         {
-            float angle = startAngle + angleStep * i;
+            float angle = startAngle + angleStep * i + currentAngleOffset;
 
             // Поворачиваем Vector3.down на угол вокруг XZ-плоскости (вокруг X)
-            Vector3 direction = Quaternion.Euler(0f, angle, 0f) * flyDirection;
+            Vector3 direction = Quaternion.Euler(0f, angle, 0f) * shootDirection;
 
             Quaternion rotation = Quaternion.LookRotation(direction) * initialRotation;
 

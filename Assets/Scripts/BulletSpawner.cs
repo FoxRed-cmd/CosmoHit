@@ -1,27 +1,18 @@
 using UnityEngine;
 
-public class BulletSpawner : MonoBehaviour
+public class BulletSpawner : BaseBulletSpawner
 {
-    [SerializeField]
-    private GameObject bulletPrefab;
-    [SerializeField]
-    private float bulletSpeed = 5f;
-    [SerializeField]
-    private float lifeTime = 5f;
     [SerializeField]
     private float[] spawnIntervals;
     [SerializeField]
     private bool loop = true;
 
-    private Vector3 shootDirection = Vector3.back;
-    private Quaternion initialRotation = Quaternion.Euler(90f, 90f, 0f);
-
     private int currentIndex = 0;
-    private float timer;
 
     private void Start()
     {
-        SpawnBullet();
+        initialRotation = Quaternion.Euler(90f, 90f, 0f);
+        Spawn();
         timer = 0f;
     }
 
@@ -30,10 +21,11 @@ public class BulletSpawner : MonoBehaviour
         if (spawnIntervals.Length == 0) return;
 
         timer += Time.deltaTime;
+        spawnInterval = spawnIntervals[currentIndex];
 
-        if (timer >= spawnIntervals[currentIndex])
+        if (timer >= spawnInterval)
         {
-            SpawnBullet();
+            Spawn();
             timer = 0f;
 
             currentIndex++;
@@ -45,17 +37,6 @@ public class BulletSpawner : MonoBehaviour
                 else
                     enabled = false;
             }
-        }
-    }
-
-    private void SpawnBullet()
-    {
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, initialRotation);
-
-        var script = bullet.GetComponent<LaserBullet>();
-        if (script != null)
-        {
-            script.SetDirection(shootDirection, bulletSpeed, lifeTime);
         }
     }
 }
