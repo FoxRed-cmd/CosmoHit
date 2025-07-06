@@ -7,6 +7,8 @@ public class BaseBulletSpawner : MonoBehaviour
     [SerializeField]
     protected float bulletSpeed = 30f;
     [SerializeField]
+    protected int bulletCount = 8;
+    [SerializeField]
     protected float lifeTime = 5f;
     [SerializeField]
     protected float spawnInterval = 2f;

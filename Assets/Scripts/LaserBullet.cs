@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LaserBullet : MonoBehaviour
 {
-    private float speed = 15f;
+    private float speed = 0f;
     private float lifeTime = 5f;
 
     private Vector3 direction = Vector3.back;

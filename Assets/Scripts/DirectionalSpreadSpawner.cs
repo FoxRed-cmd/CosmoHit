@@ -1,16 +1,15 @@
+using System.Collections;
 using UnityEngine;
 
 public class DirectionalSpreadSpawner : BaseBulletSpawner
 {
     [SerializeField]
-    private int bulletCount = 8;
+    protected float spreadAngle = 360f;
     [SerializeField]
-    private float spreadAngle = 360f;
+    protected float rotationSpeed = 30f; // градусов в секунду
     [SerializeField]
-    private float rotationSpeed = 30f; // градусов в секунду
-    [SerializeField]
-    private bool isRotate = false; // включение вращения
-    private float currentAngleOffset = 0f;
+    protected bool isRotate = false; // включение вращения
+    protected float currentAngleOffset = 0f;
 
     private void Start()
     {
