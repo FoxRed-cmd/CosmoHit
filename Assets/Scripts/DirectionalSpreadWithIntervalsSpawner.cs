@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DirectionalSpreadSpawner : BaseBulletSpawner
+public class DirectionalSpreadWithIntervalsSpawner : BulletSpawner
 {
     [SerializeField]
     protected float spreadAngle = 360f;
@@ -8,24 +8,12 @@ public class DirectionalSpreadSpawner : BaseBulletSpawner
     private void Start()
     {
         initialRotation = Quaternion.Euler(90f, 90f, 180f);
-        Spawn();
-        timer = 0f;
+        bulletCount = spawnIntervals.Length;
     }
 
-    private void Update()
+    protected override void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= spawnInterval)
-        {
-            Spawn();
-            timer = 0f;
-        }
-
-        if (isRotate)
-        {
-            currentAngleOffset += rotationSpeed * Time.deltaTime;
-            currentAngleOffset %= 360f; // чтобы не выходить за пределы круга
-        }
+        base.Update();
     }
 
     protected override void Spawn()

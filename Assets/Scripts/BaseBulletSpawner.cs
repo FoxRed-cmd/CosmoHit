@@ -11,11 +11,16 @@ public class BaseBulletSpawner : MonoBehaviour
     [SerializeField]
     protected float lifeTime = 5f;
     [SerializeField]
+    protected float rotationSpeed = 30f; // градусов в секунду
+    [SerializeField]
+    protected bool isRotate = false; // включение вращения
+    [SerializeField]
     protected float spawnInterval = 2f;
     [SerializeField]
     protected Vector3 shootDirection = Vector3.back;
 
     protected Quaternion initialRotation = Quaternion.Euler(90f, 90f, 180f);
+    protected float currentAngleOffset = 0f;
     protected float timer;
 
     private void Start()
@@ -32,15 +37,23 @@ public class BaseBulletSpawner : MonoBehaviour
             Spawn();
             timer = 0f;
         }
+
+        if (isRotate)
+        {
+            currentAngleOffset += rotationSpeed * Time.deltaTime;
+            currentAngleOffset %= 360f; // чтобы не выходить за пределы круга
+        }
     }
 
     protected virtual void Spawn()
     {
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.LookRotation(shootDirection) * initialRotation);
+        Vector3 direction = Quaternion.Euler(0f, currentAngleOffset, 0f) * shootDirection;
+
+        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.LookRotation(direction) * initialRotation);
 
         if (bullet.TryGetComponent<LaserBullet>(out var script))
         {
-            script.SetDirection(shootDirection, bulletSpeed, lifeTime);
+            script.SetDirection(direction, bulletSpeed, lifeTime);
         }
     }
 }

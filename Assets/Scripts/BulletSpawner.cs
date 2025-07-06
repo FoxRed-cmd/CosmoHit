@@ -3,7 +3,7 @@ using UnityEngine;
 public class BulletSpawner : BaseBulletSpawner
 {
     [SerializeField]
-    private float[] spawnIntervals;
+    protected float[] spawnIntervals;
     [SerializeField]
     private bool loop = true;
 
@@ -11,12 +11,11 @@ public class BulletSpawner : BaseBulletSpawner
 
     private void Start()
     {
-        initialRotation = Quaternion.Euler(90f, 90f, 0f);
-        Spawn();
-        timer = 0f;
+        initialRotation = Quaternion.Euler(90f, 90f, 180f);
+        bulletCount = spawnIntervals.Length;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (spawnIntervals.Length == 0) return;
 
@@ -37,6 +36,12 @@ public class BulletSpawner : BaseBulletSpawner
                 else
                     enabled = false;
             }
+        }
+
+        if (isRotate)
+        {
+            currentAngleOffset += rotationSpeed * Time.deltaTime;
+            currentAngleOffset %= 360f; // чтобы не выходить за пределы круга
         }
     }
 }
