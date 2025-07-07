@@ -73,10 +73,10 @@ public class SpaceshipController : MonoBehaviour
     // Метод для наклона корабля в зависимости от направления движения
     private void Tilt()
     {
-        float tiltX = -moveInput.z * tiltAngleX;
-        float tiltY = -moveInput.x * tiltAngleY;
+        float tiltZ = moveInput.z * tiltAngleX;
+        float tiltX = moveInput.x * tiltAngleY;
 
-        Quaternion tiltRotation = Quaternion.Euler(tiltX, tiltY, 0f);
+        Quaternion tiltRotation = Quaternion.Euler(tiltX, 0f, tiltZ);
         Quaternion targetRotation = baseRotation * tiltRotation;
 
         transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, Time.deltaTime * tiltSmooth);
