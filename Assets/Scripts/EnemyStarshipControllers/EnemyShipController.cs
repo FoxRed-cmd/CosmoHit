@@ -29,6 +29,7 @@ public class EnemyShipController : MonoBehaviour
 
     private float baseXPosition;
 
+
     private enum State { Entering, Staying, Exiting }
     private State currentState = State.Entering;
 
@@ -41,9 +42,16 @@ public class EnemyShipController : MonoBehaviour
     private bool isSwerveActive = false;
     private float swerveLocalTime = 0f;
 
+    private BaseBulletSpawner bulletSpawner;
+
     private void Start()
     {
         baseXPosition = transform.position.x;
+        if (TryGetComponent<BaseBulletSpawner>(out var bulletSpawner))
+        {
+            this.bulletSpawner = bulletSpawner;
+            this.bulletSpawner.enabled = false;
+        }
     }
 
     private void Update()
@@ -61,6 +69,8 @@ public class EnemyShipController : MonoBehaviour
                     baseXPosition = transform.position.x;
                     swerveLocalTime = 0f;
                     stayTimer = 0f;
+
+                    bulletSpawner.enabled = true;
                 }
                 break;
 
@@ -71,6 +81,7 @@ public class EnemyShipController : MonoBehaviour
                 if (stayTimer >= stayDuration)
                 {
                     currentState = State.Exiting;
+                    bulletSpawner.enabled = false;
                 }
                 break;
 
@@ -85,7 +96,7 @@ public class EnemyShipController : MonoBehaviour
                 break;
         }
 
-        Tilt(); // ← Вызываем наклон в конце каждого кадра
+        Tilt();
     }
 
     private void Tilt()

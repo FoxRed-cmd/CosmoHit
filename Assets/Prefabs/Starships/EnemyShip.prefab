@@ -59,6 +59,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b999fd1a0f2af724a8c304d8dbfb3314, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7578484321678619665}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b999fd1a0f2af724a8c304d8dbfb3314, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1251073408793188681}
   m_SourcePrefab: {fileID: 100100000, guid: b999fd1a0f2af724a8c304d8dbfb3314, type: 3}
 --- !u!1 &8701128605759420540 stripped
 GameObject:
@@ -91,3 +94,24 @@ MonoBehaviour:
   useSmoothSwerve: 1
   swerveAmplitude: 14
   swerveFrequency: 2
+--- !u!114 &-1251073408793188681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8701128605759420540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b500822db4cf04f8297df7c76f58f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 1685757354785232809, guid: 5663c808cc317ad43b0ca33cbaa847f4, type: 3}
+  bulletSpeed: 30
+  bulletCount: 5
+  lifeTime: 5
+  rotationSpeed: 30
+  isRotate: 0
+  spawnInterval: 0.6
+  shootDirection: {x: 0, y: 0, z: -1}
+  spreadAngle: 60
