@@ -5,17 +5,52 @@ using UnityEngine;
 public class DelayedDirectedBurstSpawner : BaseBulletSpawner
 {
     [SerializeField]
-    protected float spawnRadius = 3f;
+    private SpawnShape spawnShape = SpawnShape.Circle;
+    [SerializeField]
+    private float radius = 3f;
+    [SerializeField]
+    private float ellipseRadiusX = 3f;
+    [SerializeField]
+    private float ellipseRadiusZ = 1.5f;
     [SerializeField]
     protected float delayBetweenBullets = 0.2f;
+    [SerializeField]
+    protected float[] spawnIntervals;
+
+    private int currentIndex = 0;
+
+    private void Start()
+    {
+        bulletCount = spawnIntervals.Length;
+    }
 
     private void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= spawnInterval)
+        if (spawnIntervals.Length > 0 && spawnIntervals != null)
         {
-            Spawn();
-            timer = 0f;
+            timer += Time.deltaTime;
+            spawnInterval = spawnIntervals[currentIndex];
+            if (timer >= spawnInterval)
+            {
+                Spawn();
+                timer = 0f;
+
+                currentIndex++;
+
+                if (currentIndex >= spawnIntervals.Length)
+                {
+                    currentIndex = 0;
+                }
+            }
+        }
+        else
+        {
+            timer += Time.deltaTime;
+            if (timer >= spawnInterval)
+            {
+                Spawn();
+                timer = 0f;
+            }
         }
 
         if (isRotate)
@@ -23,6 +58,7 @@ public class DelayedDirectedBurstSpawner : BaseBulletSpawner
             currentAngleOffset += rotationSpeed * Time.deltaTime;
             currentAngleOffset %= 360f; // чтобы не выходить за пределы круга
         }
+
     }
 
     protected override void Spawn()
@@ -38,8 +74,28 @@ public class DelayedDirectedBurstSpawner : BaseBulletSpawner
 
         for (int i = 0; i < bulletCount; i++)
         {
-            Vector2 offset2D = Random.insideUnitCircle * spawnRadius;
-            Vector3 spawnPosition = transform.position + new Vector3(offset2D.x, 0f, offset2D.y);
+            Vector3 offset = Vector3.zero;
+
+            switch (spawnShape)
+            {
+                case SpawnShape.Circle:
+                    Vector2 circleOffset = Random.insideUnitCircle * radius;
+                    offset = new Vector3(circleOffset.x, 0f, circleOffset.y);
+                    break;
+
+                case SpawnShape.Ellipse:
+                    float angle = Random.Range(0f, Mathf.PI * 2f);
+                    float u = Random.Range(0f, 1f) + Random.Range(0f, 1f);
+                    float r = (u > 1) ? 2 - u : u; // равномерное распределение
+
+                    float x = Mathf.Cos(angle) * ellipseRadiusX * r;
+                    float z = Mathf.Sin(angle) * ellipseRadiusZ * r;
+
+                    offset = new Vector3(x, 0f, z);
+                    break;
+            }
+
+            Vector3 spawnPosition = transform.position + offset;
 
             GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.LookRotation(direction) * initialRotation);
             spawnedBullets.Add(bullet);
@@ -59,5 +115,11 @@ public class DelayedDirectedBurstSpawner : BaseBulletSpawner
                 script.SetDirection(direction, bulletSpeed, lifeTime);
             }
         }
+    }
+
+    public enum SpawnShape
+    {
+        Circle,
+        Ellipse
     }
 }
