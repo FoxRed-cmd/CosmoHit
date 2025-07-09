@@ -30,7 +30,6 @@ public class EnemyShipController : MonoBehaviour
     private float baseXPosition;
 
 
-    private enum State { Entering, Staying, Exiting }
     private State currentState = State.Entering;
 
     private float stayTimer = 0f;

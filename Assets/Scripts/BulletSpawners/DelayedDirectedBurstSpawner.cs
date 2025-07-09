@@ -116,10 +116,4 @@ public class DelayedDirectedBurstSpawner : BaseBulletSpawner
             }
         }
     }
-
-    public enum SpawnShape
-    {
-        Circle,
-        Ellipse
-    }
 }
