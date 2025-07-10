@@ -91,7 +91,7 @@ MonoBehaviour:
   swerveInterval: 0.5
   swerveDistance: 14
   swerveSpeed: 60
-  useSmoothSwerve: 0
+  useSmoothSwerve: 1
   swerveAmplitude: 14
   swerveFrequency: 2
 --- !u!114 &-1251073408793188681
