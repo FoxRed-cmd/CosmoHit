@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DirectionalSpreadWithIntervalsSpawner : BulletSpawner
+public class DirectionalSpreadWithIntervalsSpawner : BulletSpawnerWithIntervals
 {
     [SerializeField]
     protected float spreadAngle = 360f;
@@ -9,11 +9,7 @@ public class DirectionalSpreadWithIntervalsSpawner : BulletSpawner
     {
         initialRotation = Quaternion.Euler(90f, 90f, 180f);
         bulletCount = spawnIntervals.Length;
-    }
-
-    protected override void Update()
-    {
-        base.Update();
+        StartCoroutine(SpawnRoutine());
     }
 
     protected override void Spawn()

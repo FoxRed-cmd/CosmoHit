@@ -8,24 +8,7 @@ public class DirectionalSpreadSpawner : BaseBulletSpawner
     private void Start()
     {
         initialRotation = Quaternion.Euler(90f, 90f, 180f);
-        Spawn();
-        timer = 0f;
-    }
-
-    private void Update()
-    {
-        timer += Time.deltaTime;
-        if (timer >= spawnInterval)
-        {
-            Spawn();
-            timer = 0f;
-        }
-
-        if (isRotate)
-        {
-            currentAngleOffset += rotationSpeed * Time.deltaTime;
-            currentAngleOffset %= 360f; // чтобы не выходить за пределы круга
-        }
+        StartCoroutine(SpawnRoutine());
     }
 
     protected override void Spawn()

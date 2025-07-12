@@ -62,7 +62,7 @@ MonoBehaviour:
   active: 1
   enabled:
     overrideState: 1
-    value: 1
+    value: 0
   colored:
     overrideState: 1
     value: 1
@@ -133,7 +133,7 @@ MonoBehaviour:
   active: 1
   enabled:
     overrideState: 1
-    value: 1
+    value: 0
   mode:
     overrideState: 1
     value: 0
@@ -145,15 +145,15 @@ MonoBehaviour:
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0.308
+    value: 0
   smoothness:
-    overrideState: 1
+    overrideState: 0
     value: 0.231
   roundness:
-    overrideState: 1
+    overrideState: 0
     value: 0.982
   rounded:
-    overrideState: 1
+    overrideState: 0
     value: 0
   mask:
     overrideState: 1

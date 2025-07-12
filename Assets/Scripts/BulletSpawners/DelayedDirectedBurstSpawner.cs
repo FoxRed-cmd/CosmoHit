@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DelayedDirectedBurstSpawner : BaseBulletSpawner
@@ -16,49 +17,17 @@ public class DelayedDirectedBurstSpawner : BaseBulletSpawner
     protected float delayBetweenBullets = 0.2f;
     [SerializeField]
     protected float[] spawnIntervals;
-
-    private int currentIndex = 0;
+    [SerializeField]
+    protected bool waitAllBullets = false;
 
     private void Start()
     {
-        bulletCount = spawnIntervals.Length;
-    }
-
-    private void Update()
-    {
-        if (spawnIntervals.Length > 0 && spawnIntervals != null)
+        if (spawnIntervals.Length != 0)
         {
-            timer += Time.deltaTime;
-            spawnInterval = spawnIntervals[currentIndex];
-            if (timer >= spawnInterval)
-            {
-                Spawn();
-                timer = 0f;
-
-                currentIndex++;
-
-                if (currentIndex >= spawnIntervals.Length)
-                {
-                    currentIndex = 0;
-                }
-            }
+            bulletCount = spawnIntervals.Length;
+            spawnInterval = spawnIntervals.Sum();
         }
-        else
-        {
-            timer += Time.deltaTime;
-            if (timer >= spawnInterval)
-            {
-                Spawn();
-                timer = 0f;
-            }
-        }
-
-        if (isRotate)
-        {
-            currentAngleOffset += rotationSpeed * Time.deltaTime;
-            currentAngleOffset %= 360f; // чтобы не выходить за пределы круга
-        }
-
+        StartCoroutine(SpawnRoutine());
     }
 
     protected override void Spawn()
@@ -68,9 +37,11 @@ public class DelayedDirectedBurstSpawner : BaseBulletSpawner
 
     private IEnumerator SpawnAndFireBurst()
     {
-        List<GameObject> spawnedBullets = new List<GameObject>();
+        Stack<GameObject> spawnedBullets = new Stack<GameObject>();
 
         Vector3 direction = Quaternion.Euler(0f, currentAngleOffset, 0f) * shootDirection;
+
+        int currentIndex = 0;
 
         for (int i = 0; i < bulletCount; i++)
         {
@@ -97,22 +68,43 @@ public class DelayedDirectedBurstSpawner : BaseBulletSpawner
 
             Vector3 spawnPosition = transform.position + offset;
 
+            if (spawnIntervals.Length > 0 && spawnIntervals != null)
+            {
+                if (currentIndex >= spawnIntervals.Length)
+                {
+                    currentIndex = 0;
+                }
+                delayBetweenBullets = spawnIntervals[currentIndex++];
+            }
+
             GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.LookRotation(direction) * initialRotation);
-            spawnedBullets.Add(bullet);
+
+            if (!waitAllBullets && bullet != null && bullet.TryGetComponent<LaserBullet>(out var script))
+            {
+                script.SetDirection(direction, bulletSpeed, lifeTime);
+            }
+            else
+            {
+                spawnedBullets.Push(bullet);
+            }
 
             yield return new WaitForSeconds(delayBetweenBullets);
         }
 
-        foreach (var bullet in spawnedBullets)
+        if (waitAllBullets)
         {
-            if (bullet != null && bullet.TryGetComponent<BulletShaker>(out var shakerScript))
+            for (int i = 0; i < spawnedBullets.Count; i++)
             {
-                Destroy(shakerScript);
-            }
+                var bullet = spawnedBullets.Pop();
+                if (bullet != null && bullet.TryGetComponent<BulletShaker>(out var shakerScript))
+                {
+                    Destroy(shakerScript);
+                }
 
-            if (bullet != null && bullet.TryGetComponent<LaserBullet>(out var script))
-            {
-                script.SetDirection(direction, bulletSpeed, lifeTime);
+                if (bullet != null && bullet.TryGetComponent<LaserBullet>(out var script))
+                {
+                    script.SetDirection(direction, bulletSpeed, lifeTime);
+                }
             }
         }
     }

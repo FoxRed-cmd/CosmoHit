@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 1.79
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -170,13 +170,12 @@ MonoBehaviour:
   rotationSpeed: 30
   isRotate: 0
   spawnInterval: 2
-  shootDirection: {x: 0, y: 0, z: -1}
+  isSpawning: 1
   spawnIntervals:
   - 0.6
   - 0.6
   - 1
   - 0.2
-  loop: 1
   spreadAngle: 360
 --- !u!1 &177691569
 GameObject:
@@ -264,8 +263,8 @@ Camera:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.05927375, g: 0.06938633, b: 0.11320752, a: 0}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.31764707, g: 0.31764707, b: 0.31764707, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -420,7 +419,7 @@ MonoBehaviour:
       colorBlindnessStrength: 1
   m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
   m_ShowToolkit: 1
-  m_ShowCustomSorter: 1
+  m_ShowCustomSorter: 0
   breakBeforeColorGrading: 0
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
@@ -582,13 +581,12 @@ MonoBehaviour:
   rotationSpeed: 30
   isRotate: 0
   spawnInterval: 2
-  shootDirection: {x: 0, y: 0, z: -1}
+  isSpawning: 1
   spawnIntervals:
-  - 0.6
   - 0.6
   - 1
   - 0.2
-  loop: 1
+  - 0.6
 --- !u!4 &544988498
 Transform:
   m_ObjectHideFlags: 0
@@ -15138,20 +15136,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b1754663098b3140b2d3c937b258a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1685757354785232809, guid: 9cffe7b227743bd4aadf3e1fd584fe14, type: 3}
+  bulletPrefab: {fileID: 1685757354785232809, guid: 5663c808cc317ad43b0ca33cbaa847f4, type: 3}
   bulletSpeed: 30
   bulletCount: 8
   lifeTime: 5
   rotationSpeed: 30
-  isRotate: 0
+  isRotate: 1
   spawnInterval: 2
-  shootDirection: {x: 0, y: 0, z: -1}
-  spawnShape: 0
+  isSpawning: 1
+  spawnShape: 1
   radius: 3
-  ellipseRadiusX: 3
+  ellipseRadiusX: 60
   ellipseRadiusZ: 1.5
   delayBetweenBullets: 0.2
-  spawnIntervals: []
+  spawnIntervals:
+  - 1
+  - 1
+  - 3
+  - 1
+  - 1
+  waitAllBullets: 0
 --- !u!4 &726662504
 Transform:
   m_ObjectHideFlags: 0
@@ -15188,7 +15192,7 @@ GameObject:
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &916323552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15198,9 +15202,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 916323551}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ed9b2aaa658b844b8128a6ed213922c, type: 3}
+  m_Script: {fileID: 11500000, guid: c1d6146898474254eba6ddc6446778f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 1685757354785232809, guid: 5663c808cc317ad43b0ca33cbaa847f4, type: 3}
+  bulletSpeed: 30
+  bulletCount: 8
+  lifeTime: 5
+  rotationSpeed: 30
+  isRotate: 0
+  spawnInterval: 2
+  isSpawning: 1
+  spawnIntervals:
+  - 0.2
+  - 0.2
+  - 0.6
+  - 1
+  - 1
+  spreadAngle: 360
 --- !u!4 &916323553
 Transform:
   m_ObjectHideFlags: 0
@@ -15232,7 +15251,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &918184306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15314,7 +15333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1078871293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20201,7 +20220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1383827978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20304,7 +20323,7 @@ MonoBehaviour:
   rotationSpeed: 30
   isRotate: 0
   spawnInterval: 2
-  shootDirection: {x: 0, y: 0, z: -1}
+  isSpawning: 1
 --- !u!4 &1525549356
 Transform:
   m_ObjectHideFlags: 0
@@ -20336,7 +20355,7 @@ GameObject:
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1695136133
 Transform:
   m_ObjectHideFlags: 0
@@ -20371,7 +20390,7 @@ MonoBehaviour:
   rotationSpeed: 30
   isRotate: 0
   spawnInterval: 3
-  shootDirection: {x: 1, y: 0, z: -1}
+  isSpawning: 1
   spreadAngle: 90
 --- !u!1 &2141355759
 GameObject:

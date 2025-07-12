@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BaseBulletSpawner : MonoBehaviour
@@ -17,6 +18,7 @@ public class BaseBulletSpawner : MonoBehaviour
     [SerializeField]
     protected float spawnInterval = 2f;
     [SerializeField]
+    protected bool isSpawning = true;
     protected Vector3 shootDirection = Vector3.back;
 
     protected Quaternion initialRotation = Quaternion.Euler(90f, 90f, 180f);
@@ -25,23 +27,23 @@ public class BaseBulletSpawner : MonoBehaviour
 
     private void Start()
     {
-        Spawn();
-        timer = 0f;
+        StartCoroutine(SpawnRoutine());
     }
 
-    private void Update()
+    protected void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= spawnInterval)
-        {
-            Spawn();
-            timer = 0f;
-        }
-
         if (isRotate)
         {
-            currentAngleOffset += rotationSpeed * Time.deltaTime;
-            currentAngleOffset %= 360f; // чтобы не выходить за пределы круга
+            RotateBullet();
+        }
+    }
+
+    protected virtual IEnumerator SpawnRoutine()
+    {
+        while (isSpawning)
+        {
+            Spawn();
+            yield return new WaitForSeconds(spawnInterval);
         }
     }
 
@@ -55,5 +57,11 @@ public class BaseBulletSpawner : MonoBehaviour
         {
             script.SetDirection(direction, bulletSpeed, lifeTime);
         }
+    }
+
+    protected void RotateBullet()
+    {
+        currentAngleOffset += rotationSpeed * Time.deltaTime;
+        currentAngleOffset %= 360f; // чтобы не выходить за пределы круга
     }
 }
